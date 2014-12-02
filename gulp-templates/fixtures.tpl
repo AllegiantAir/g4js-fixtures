@@ -1,0 +1,1 @@
+angular.module('<%= moduleName %>').config(['fixtureStoreProvider', function(fixtureStoreProvider) {<%= contents %>}]);
