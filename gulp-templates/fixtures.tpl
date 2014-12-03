@@ -1,1 +1,1 @@
-angular.module('<%= moduleName %>').config(['fixtureStoreProvider', function(fixtureStoreProvider) {<%= contents %>}]);
+angular.module('<%= moduleName %>').config(['fixtureDbProvider', function(fixtureDbProvider) {<%= contents %>}]);

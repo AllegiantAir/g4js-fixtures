@@ -3,7 +3,7 @@
   'use strict';
 
   angular.module('ng-fixtures', ['ngMockE2E'])
-    .provider('fixtureStore', function() {
+    .provider('fixtureDb', function() {
       // this is the "amplify" store key where we store
       // the original JSON objects that we compare against
       // when determining if the local data changed
@@ -19,7 +19,7 @@
       };
 
       // whenever a route is defined for a request
-      // look for a possible match against the fixtureStore so we know
+      // look for a possible match against the fixtureDb so we know
       // if we still need to generate a default route for this collection
       // or a developer overwritten this
       this.markURL = function(url) {
@@ -40,7 +40,7 @@
        * @param {String} key
        * @param {Object} value
        */
-      this.setData = function(key, value) {
+      this.setInitialData = function(key, value) {
         // check if value is already set
         var isSet = amplify.store(key),
           // get the original fixtures
@@ -82,11 +82,11 @@
 
   /**
    * ***************************************************************************************
-   * A backend for fixtures that will load data from the fixtureStore and handle
+   * A backend for fixtures that will load data from the fixtureDb and handle
    * retreival, creation, updating and deleting items from the store (which is persistent).
    * ***************************************************************************************
    */
-  .provider('fixtureBackend', ['fixtureStoreProvider', function(fixtureStoreProvider) {
+  .provider('fixtureStore', ['fixtureDbProvider', function(fixtureDbProvider) {
     // shortcut function that rearranges the order of arguments
     // (I don't like Angular's default order :-) )
     var response = function(code, status, body, headers) {
@@ -330,10 +330,10 @@
    * Provider that maps URL requests to JSON responses
    * **********************************************************************************
    */
-  .provider('fixtureRoute', ['fixtureBackendProvider', 'fixtureStoreProvider', function(fixtureBackendProvider, fixtureStoreProvider) {
-    // alias the class name returned by the fixtureBackendProvider so that JSLint doesn't complain when instantiating the store
+  .provider('fixtures', ['fixtureStoreProvider', 'fixtureDbProvider', function(fixtureStoreProvider, fixtureDbProvider) {
+    // alias the class name returned by the fixtureStoreProvider so that JSLint doesn't complain when instantiating the store
     // that's why we use uppercase here
-    var FixtureBackend = fixtureBackendProvider.$get();
+    var FixtureStore = fixtureStoreProvider.$get();
 
     /**
      * Escapes a string so that it can be used to create a RegExp object from it
@@ -456,7 +456,7 @@
 
       // whenever we mapped a route for a URL, we try to mark it as a possible overwrite for a stored JSON
       // so that we won't generate default routes for it
-      fixtureStoreProvider.markURL(url);
+      fixtureDbProvider.markURL(url);
     };
 
     this.whenGET = function(url, fn) {
@@ -491,7 +491,7 @@
       }
 
       // initialise a store with the name of the resource
-      var store = new FixtureBackend(name);
+      var store = new FixtureStore(name);
 
       // the following methods connect the HTTP request url with the actual function
 
@@ -527,9 +527,9 @@
      * Adding passThrough for everything else, means that we can also have requests to real services
      * side by side with our mock ones.
      */
-    this.initialise = function() {
+    this.run = function() {
       var self = this,
-        collections = fixtureStoreProvider.getCollections();
+        collections = fixtureDbProvider.getCollections();
 
       // all the collections that were added from JSON files
       // and are not configured yet

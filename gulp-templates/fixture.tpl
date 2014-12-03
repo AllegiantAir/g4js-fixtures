@@ -1,2 +1,2 @@
 <% var name = path.basename(file.path, '.json') %>
-fixtureStoreProvider.setData('<%= name %>', <%= contents %>);
+fixtureDbProvider.setInitialData('<%= name %>', <%= contents %>);
