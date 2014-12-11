@@ -4,7 +4,8 @@
 Fixture based local database.
 Acts just like a REST service and persists the data in the browser's local storage.
 
-
+## Demo app
+You can find a demo application here: [https://github.com/nicu/g4FixturesDemo](https://github.com/nicu/g4FixturesDemo)
 
 ## Structure
 ### fixtureDb
