@@ -112,6 +112,6 @@ You don't have to provide default data for any / all of the collections. All you
 
 ## TODO
 
-- Update the URL format to match Angular's $resource one. Instead of having "/users/{id}" we'd have "/users/:id"
+- Update the URL format to match Angular's $resource one. Instead of having `/users/{id}` we'd have `/users/:id`
 - Create a configurable Gulp task that would use JSON files stored on disk as defaults for the data
  
