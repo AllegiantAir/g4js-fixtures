@@ -2,7 +2,7 @@
 (function() {
   'use strict';
 
-  angular.module('g4-fixtures', ['ngMockE2E'])
+  angular.module('g4Fixtures', ['ngMockE2E'])
     .provider('fixtureDb', function() {
       // this is the "amplify" store key where we store
       // the original JSON objects that we compare against
